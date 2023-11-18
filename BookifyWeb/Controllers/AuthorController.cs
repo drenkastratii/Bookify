@@ -37,6 +37,36 @@ namespace BookifyWeb.Controllers
             
         }
 
+        public IActionResult Edit(int id)
+        {
+            if (id == null || id == 0) 
+            {
+                return NotFound();
+            }
+            Author? authFromDb = _db.Authors.Find(id);
+            if (authFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(authFromDb);
+            
+        }
+
+        [HttpPost]
+
+        public IActionResult Edit(Author obj)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _db.Authors.Update(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+
+        }
+
 
     }
 }
