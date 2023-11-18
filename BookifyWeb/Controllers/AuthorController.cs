@@ -25,10 +25,16 @@ namespace BookifyWeb.Controllers
         [HttpPost]
 
         public IActionResult Create(Author obj)
-        { 
-            _db.Authors.Add(obj);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+        {
+            
+            if (ModelState.IsValid)
+            {
+                _db.Authors.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+            
         }
 
 
