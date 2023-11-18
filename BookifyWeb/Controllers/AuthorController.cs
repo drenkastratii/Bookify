@@ -31,13 +31,14 @@ namespace BookifyWeb.Controllers
             {
                 _db.Authors.Add(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Author created successfully";
                 return RedirectToAction("Index");
             }
             return View();
             
         }
 
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
             if (id == null || id == 0) 
             {
@@ -61,6 +62,7 @@ namespace BookifyWeb.Controllers
             {
                 _db.Authors.Update(obj);
                 _db.SaveChanges();
+                TempData["success"] = "Author updated successfully";
                 return RedirectToAction("Index");
             }
             return View();
