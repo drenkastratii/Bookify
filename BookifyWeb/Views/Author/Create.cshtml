@@ -1,0 +1,27 @@
+﻿@model Author
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+        <h2 class="text-primary">Create Author</h2>
+        <hr/>
+        <div/>
+        <div class="mb-3">
+            <label>Author Id</label>
+            <input asp-for="Id" class="form-control"/>
+        </div>
+    </div>
+        <div class="mb-3">
+            <label>Author Full Name</label>
+            <input asp-for="FullName" class="form-control" />
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary" style="width:150px">Create Author</button>
+            </div>
+            <div class="col-6">
+                <a asp-controller="Author" asp-action="Index" class="btn btn-outline-secondary border" style="width:150px">Back to the List</a>
+            </div>
+        </div>
+    </div>
+</form>
