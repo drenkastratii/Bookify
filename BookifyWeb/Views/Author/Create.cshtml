@@ -6,22 +6,25 @@
         <h2 class="text-primary">Create Author</h2>
         <hr/>
         <div/>
-        <div class="mb-3">
-            <label>Author Id</label>
-            <input asp-for="Id" class="form-control"/>
-        </div>
     </div>
         <div class="mb-3">
             <label>Author Full Name</label>
             <input asp-for="FullName" class="form-control" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
         </div>
         <div class="row">
-            <div class="col-6">
-                <button type="submit" class="btn btn-primary" style="width:150px">Create Author</button>
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control">Create</button>
             </div>
-            <div class="col-6">
-                <a asp-controller="Author" asp-action="Index" class="btn btn-outline-secondary border" style="width:150px">Back to the List</a>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Author" asp-action="Index" class="btn btn-outline-secondary border form-control">Back to List</a>
             </div>
         </div>
     </div>
 </form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
