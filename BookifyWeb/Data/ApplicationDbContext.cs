@@ -13,6 +13,7 @@ namespace BookifyWeb.Data
 
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<Author> Authors { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -23,6 +24,12 @@ namespace BookifyWeb.Data
                 new Category { Id=3, Name="SciFI"}
 
                 );
+            modelBuilder.Entity<Author>().HasData(
+                new Author { Id=1, FullName="Stephen King" },
+                new Author { Id=2, FullName="George Orwell"},
+                new Author { Id=3, FullName="Frank Herbert"}
+                );
         }
+
     }
 }
