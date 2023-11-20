@@ -23,10 +23,13 @@ namespace BookifyWeb.Controllers
         }
 
         [HttpPost]
-
         public IActionResult Create(Author obj)
         {
-            
+            var existingAuthor = _unitOfWork.Author.Get(c => c.FullName.ToLower() == obj.FullName.ToLower());
+            if (existingAuthor != null)
+            {
+                ModelState.AddModelError("FullName", "The Author Already Exists");
+            }
             if (ModelState.IsValid)
             {
                 _unitOfWork.Author.Add(obj);
@@ -57,7 +60,11 @@ namespace BookifyWeb.Controllers
 
         public IActionResult Edit(Author obj)
         {
-
+            var existingAuthor = _unitOfWork.Author.Get(c => c.FullName.ToLower() == obj.FullName.ToLower());
+            if (existingAuthor != null)
+            {
+                ModelState.AddModelError("FullName", "The Author Already Exists");
+            }
             if (ModelState.IsValid)
             {
                 _unitOfWork.Author.Update(obj);
