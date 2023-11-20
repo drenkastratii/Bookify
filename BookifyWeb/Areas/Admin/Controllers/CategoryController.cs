@@ -2,8 +2,10 @@
 using Bookify.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookifyWeb.Controllers
+namespace BookifyWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -24,7 +26,7 @@ namespace BookifyWeb.Controllers
         public IActionResult Create(Category obj)
         {
             var existingCategory = _unitOfWork.Category.Get(c => c.Name.ToLower() == obj.Name.ToLower());
-            if(existingCategory != null)
+            if (existingCategory != null)
             {
                 ModelState.AddModelError("Name", "The Category Already Exists");
             }
@@ -36,14 +38,14 @@ namespace BookifyWeb.Controllers
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
-            return View();   
-            
-            
+            return View();
+
+
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id==null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
