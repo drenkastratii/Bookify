@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bookify.Models.Models
+namespace Bookify.Models
 {
     public class Book
     {
@@ -20,7 +20,7 @@ namespace Bookify.Models.Models
         public string Description { get; set; }
 
         [Required]
-        [Range(1,100)]
+        [Range(1, 100)]
         public double Price { get; set; }
     }
 }
