@@ -108,7 +108,7 @@ namespace Bookify.Migrations
                             Id = 2,
                             Description = "This is the Description",
                             Price = 18.0,
-                            Title = "Cotton Candy"
+                            Title = "Dark Skies"
                         },
                         new
                         {

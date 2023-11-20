@@ -39,7 +39,7 @@ namespace Bookify.Data
 
             modelBuilder.Entity<Book>().HasData(
                 new Book { Id=1, Title="Cotton Candy", Description= "This is the Description", Price=15},
-                new Book { Id=2, Title="Cotton Candy", Description="This is the Description", Price=18},
+                new Book { Id=2, Title="Dark Skies", Description="This is the Description", Price=18},
                 new Book { Id=3, Title="Fortune of Time", Description="This is the Description", Price=22},
                 new Book { Id=4, Title="Leaves and Wonders", Description="This is the Description", Price=9},
                 new Book { Id=5, Title="Rock in The Ocean", Description="This is the Description", Price=11},

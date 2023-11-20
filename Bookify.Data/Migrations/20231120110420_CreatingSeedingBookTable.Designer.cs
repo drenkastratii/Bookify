@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookify.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231120095713_CreatingSeedingBookTable")]
+    [Migration("20231120110420_CreatingSeedingBookTable")]
     partial class CreatingSeedingBookTable
     {
         /// <inheritdoc />
@@ -111,7 +111,7 @@ namespace Bookify.Migrations
                             Id = 2,
                             Description = "This is the Description",
                             Price = 18.0,
-                            Title = "Cotton Candy"
+                            Title = "Dark Skies"
                         },
                         new
                         {
