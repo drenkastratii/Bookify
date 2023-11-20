@@ -1,4 +1,4 @@
-﻿using Bookify.Data;
+﻿using Bookify.Data.Repository.IRepository;
 using Bookify.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,14 +6,14 @@ namespace BookifyWeb.Controllers
 {
     public class AuthorController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public AuthorController(ApplicationDbContext db)
+        private readonly IUnitOfWork _unitOfWork;
+        public AuthorController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Author> objAuthList = _db.Authors.ToList();
+            List<Author> objAuthList = _unitOfWork.Author.GetAll().ToList();
             return View(objAuthList);
         }
 
@@ -29,8 +29,8 @@ namespace BookifyWeb.Controllers
             
             if (ModelState.IsValid)
             {
-                _db.Authors.Add(obj);
-                _db.SaveChanges();
+                _unitOfWork.Author.Add(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Author created successfully";
                 return RedirectToAction("Index");
             }
@@ -44,7 +44,7 @@ namespace BookifyWeb.Controllers
             {
                 return NotFound();
             }
-            Author? authFromDb = _db.Authors.Find(id);
+            Author? authFromDb = _unitOfWork.Author.Get(c => c.Id == id);
             if (authFromDb == null)
             {
                 return NotFound();
@@ -60,8 +60,8 @@ namespace BookifyWeb.Controllers
 
             if (ModelState.IsValid)
             {
-                _db.Authors.Update(obj);
-                _db.SaveChanges();
+                _unitOfWork.Author.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Author updated successfully";
                 return RedirectToAction("Index");
             }
@@ -75,7 +75,7 @@ namespace BookifyWeb.Controllers
             {
                 return NotFound();
             }
-            Author? authFromDb = _db.Authors.Find(id);
+            Author? authFromDb = _unitOfWork.Author.Get(c => c.Id == id);
             if (authFromDb == null)
             {
                 return NotFound();
@@ -86,13 +86,13 @@ namespace BookifyWeb.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Author? obj = _db.Authors.Find(id);
+            Author? obj = _unitOfWork.Author.Get(c => c.Id == id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _db.Authors.Remove(obj);
-            _db.SaveChanges();
+            _unitOfWork.Author.Remove(obj);
+            _unitOfWork.Save();
             TempData["success"] = "Author deleted successfully";
             return RedirectToAction("Index");
         }
