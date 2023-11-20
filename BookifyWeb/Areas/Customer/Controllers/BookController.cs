@@ -76,7 +76,32 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
         }
 
-        
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Book? bookFromDb = _unitOfWork.Book.Get(c => c.Id == id);
+            if (bookFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(bookFromDb);
+        }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePOST(int? id)
+        {
+            Book? obj = _unitOfWork.Book.Get(c => c.Id == id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _unitOfWork.Book.Remove(obj);
+            _unitOfWork.Save();
+            TempData["success"] = "Book deleted successfully";
+            return RedirectToAction("Index");
+        }
     }
 }
 
