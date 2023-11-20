@@ -23,6 +23,11 @@ namespace BookifyWeb.Controllers
         [HttpPost]
         public IActionResult Create(Category obj)
         {
+            var existingCategory = _unitOfWork.Category.Get(c => c.Name.ToLower() == obj.Name.ToLower());
+            if(existingCategory != null)
+            {
+                ModelState.AddModelError("Name", "The Category Already Exists");
+            }
 
             if (ModelState.IsValid)
             {
@@ -52,7 +57,11 @@ namespace BookifyWeb.Controllers
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
-
+            var existingCategory = _unitOfWork.Category.Get(c => c.Name.ToLower() == obj.Name.ToLower());
+            if (existingCategory != null)
+            {
+                ModelState.AddModelError("Name", "The Category Already Exists");
+            }
             if (ModelState.IsValid)
             {
                 _unitOfWork.Category.Update(obj);
