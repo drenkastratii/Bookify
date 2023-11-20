@@ -1,4 +1,4 @@
-using BookifyWeb.Data;
+using Bookify.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

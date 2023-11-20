@@ -1,5 +1,5 @@
-﻿using BookifyWeb.Data;
-using BookifyWeb.Models;
+﻿using Bookify.Data;
+using Bookify.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookifyWeb.Controllers

@@ -17,4 +17,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bookifi.Utility\Bookify.Utility.csproj" />
+    <ProjectReference Include="..\Bookify.Data\Bookify.Data.csproj" />
+    <ProjectReference Include="..\Bookify.Model\Bookify.Models.csproj" />
+  </ItemGroup>
+
 </Project>
