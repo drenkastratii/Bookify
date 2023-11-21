@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Bookify.Model\Bookify.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\book\" />
+  </ItemGroup>
+
 </Project>

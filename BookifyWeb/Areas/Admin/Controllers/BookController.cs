@@ -12,9 +12,11 @@ namespace BookifyWeb.Areas.Admin.Controllers
     public class BookController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public BookController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public BookController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -56,9 +58,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public IActionResult UpSert(BookVM obj, IFormFile? file)
+        public IActionResult UpSert(BookVM bookVM, IFormFile? file)
         {
-            var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == obj.Book.Title.ToLower());
+            var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == bookVM.Book.Title.ToLower());
             if (existingBook != null)
             {
                 ModelState.AddModelError("Title", "The Book Already Exists");
@@ -66,7 +68,23 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Book.Add(obj.Book);
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if(file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string bookPath = Path.Combine(wwwRootPath, @"images\book");  
+
+                    using(var fileStream = new FileStream(Path.Combine(bookPath, fileName),FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    bookVM.Book.ImageUrl = @"\images\product\" + fileName;
+                }
+
+
+
+                _unitOfWork.Book.Add(bookVM.Book);
                 _unitOfWork.Save();
                 TempData["success"] = "Book created successfully";
                 return RedirectToAction("Index");
