@@ -21,33 +21,42 @@ namespace BookifyWeb.Areas.Admin.Controllers
             List<Book> objBookList = _unitOfWork.Book.GetAll().ToList();
             return View(objBookList);
         }
-        public IActionResult Create()
+        public IActionResult UpSert(int? id)
         {
-            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category
-                .GetAll().Select(u => new SelectListItem
-                {
-                    Text = u.Name,
-                    Value = u.Id.ToString()
-                });
-
-            IEnumerable<SelectListItem> AuthorList = _unitOfWork.Author
-                .GetAll().Select(u => new SelectListItem
-                {
-                    Text = u.FullName,
-                    Value = u.Id.ToString()
-                });
 
             BookVM bookVM = new()
             {
-                CategoryList = CategoryList,
-                AuthorList = AuthorList,
+                CategoryList = _unitOfWork.Category
+                    .GetAll().Select(u => new SelectListItem
+                    {
+                        Text = u.Name,
+                        Value = u.Id.ToString()
+                    }),
+                AuthorList = _unitOfWork.Author
+                    .GetAll().Select(u => new SelectListItem
+                    {
+                        Text = u.FullName,
+                        Value = u.Id.ToString()
+                    }),
                 Book = new Book()
             };
 
-            return View(bookVM);
+            if(id == null || id == 0)
+            {
+                //Create
+                return View(bookVM);
+            }
+            else
+            {
+                //Update
+                bookVM.Book = _unitOfWork.Book.Get(u => u.Id == id);    
+                return View(bookVM);
+            }
         }
+
+
         [HttpPost]
-        public IActionResult Create(BookVM obj)
+        public IActionResult UpSert(BookVM obj, IFormFile? file)
         {
             var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == obj.Book.Title.ToLower());
             if (existingBook != null)
@@ -63,42 +72,8 @@ namespace BookifyWeb.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             return View();
-
-
         }
 
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Book? bookFromDb = _unitOfWork.Book.Get(c => c.Id == id);
-            if (bookFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(bookFromDb);
-        }
-        [HttpPost]
-        public IActionResult Edit(Book obj)
-        {
-            var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == obj.Title.ToLower());
-            if (existingBook != null)
-            {
-                ModelState.AddModelError("Title", "The Book Already Exists");
-            }
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Book.Update(obj);
-                _unitOfWork.Save();
-                TempData["success"] = "Book updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
-
-
-        }
 
         public IActionResult Delete(int? id)
         {
