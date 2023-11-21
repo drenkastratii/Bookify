@@ -1,10 +1,11 @@
 ﻿using Bookify.Data.Repository.IRepository;
 using Bookify.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookifyWeb.Areas.Admin.Controllers
 {
-    [Area("Customer")]
+    [Area("Admin")]
 
     public class BookController : Controller
     {
@@ -16,6 +17,21 @@ namespace BookifyWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Book> objBookList = _unitOfWork.Book.GetAll().ToList();
+            
+            IEnumerable<SelectListItem> categoryList = _unitOfWork.Category
+                .GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+
+            IEnumerable<SelectListItem> authorList = _unitOfWork.Author
+                .GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.FullName,
+                    Value = u.Id.ToString()
+                });
+
             return View(objBookList);
         }
         public IActionResult Create()
