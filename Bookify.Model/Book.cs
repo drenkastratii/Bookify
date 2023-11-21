@@ -31,5 +31,7 @@ namespace Bookify.Models
         public int AuthorId { get; set; }
         [ForeignKey("AuthorId")]
         public Author Author { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

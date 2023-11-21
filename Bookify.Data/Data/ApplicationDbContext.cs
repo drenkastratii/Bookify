@@ -38,12 +38,12 @@ namespace Bookify.Data
                 );
 
             modelBuilder.Entity<Book>().HasData(
-                new Book { Id=1, Title="Cotton Candy", Description= "This is the Description", Price=15, CategoryId = 1, AuthorId = 1},
-                new Book { Id=2, Title="Dark Skies", Description="This is the Description", Price=18, CategoryId = 2, AuthorId = 2 },
-                new Book { Id=3, Title="Fortune of Time", Description="This is the Description", Price=22, CategoryId = 2, AuthorId = 3 },
-                new Book { Id=4, Title="Leaves and Wonders", Description="This is the Description", Price=9, CategoryId = 2, AuthorId = 4 },
-                new Book { Id=5, Title="Rock in The Ocean", Description="This is the Description", Price=11, CategoryId = 3, AuthorId = 5 },
-                new Book { Id=6, Title="Vanish in The Sunset", Description="This is the Description", Price=17, CategoryId = 1, AuthorId = 6 }
+                new Book { Id=1, Title="Cotton Candy", Description= "This is the Description", Price=15, CategoryId = 1, AuthorId = 1, ImageUrl = "" },
+                new Book { Id=2, Title="Dark Skies", Description="This is the Description", Price=18, CategoryId = 2, AuthorId = 2, ImageUrl = "" },
+                new Book { Id=3, Title="Fortune of Time", Description="This is the Description", Price=22, CategoryId = 2, AuthorId = 3, ImageUrl = "" },
+                new Book { Id=4, Title="Leaves and Wonders", Description="This is the Description", Price=9, CategoryId = 2, AuthorId = 4, ImageUrl = "" },
+                new Book { Id=5, Title="Rock in The Ocean", Description="This is the Description", Price=11, CategoryId = 3, AuthorId = 5, ImageUrl = "" },
+                new Book { Id=6, Title="Vanish in The Sunset", Description="This is the Description", Price=17, CategoryId = 1, AuthorId = 6, ImageUrl = "" }
 
                );
 
