@@ -17,25 +17,27 @@ namespace BookifyWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Book> objBookList = _unitOfWork.Book.GetAll().ToList();
-            
-            IEnumerable<SelectListItem> categoryList = _unitOfWork.Category
+            return View(objBookList);
+        }
+        public IActionResult Create()
+        {
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category
                 .GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
                 });
 
-            IEnumerable<SelectListItem> authorList = _unitOfWork.Author
+            IEnumerable<SelectListItem> AuthorList = _unitOfWork.Author
                 .GetAll().Select(u => new SelectListItem
                 {
                     Text = u.FullName,
                     Value = u.Id.ToString()
                 });
 
-            return View(objBookList);
-        }
-        public IActionResult Create()
-        {
+            ViewBag.CategoryList = CategoryList;
+            ViewBag.AuthorList = AuthorList;
+
             return View();
         }
         [HttpPost]
