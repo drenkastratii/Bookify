@@ -1,7 +1,9 @@
 ﻿using Bookify.Data.Repository.IRepository;
+using Bookify.Models.ViewModels;
 using Bookify.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.Http.Headers;
 
 namespace BookifyWeb.Areas.Admin.Controllers
 {
@@ -35,15 +37,19 @@ namespace BookifyWeb.Areas.Admin.Controllers
                     Value = u.Id.ToString()
                 });
 
-            ViewBag.CategoryList = CategoryList;
-            ViewBag.AuthorList = AuthorList;
+            BookVM bookVM = new()
+            {
+                CategoryList = CategoryList,
+                AuthorList = AuthorList,
+                Book = new Book()
+            };
 
-            return View();
+            return View(bookVM);
         }
         [HttpPost]
-        public IActionResult Create(Book obj)
+        public IActionResult Create(BookVM obj)
         {
-            var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == obj.Title.ToLower());
+            var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == obj.Book.Title.ToLower());
             if (existingBook != null)
             {
                 ModelState.AddModelError("Title", "The Book Already Exists");
@@ -51,7 +57,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Book.Add(obj);
+                _unitOfWork.Book.Add(obj.Book);
                 _unitOfWork.Save();
                 TempData["success"] = "Book created successfully";
                 return RedirectToAction("Index");
