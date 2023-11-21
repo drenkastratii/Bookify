@@ -56,40 +56,54 @@ namespace BookifyWeb.Areas.Admin.Controllers
             }
         }
 
-
         [HttpPost]
         public IActionResult UpSert(BookVM bookVM, IFormFile? file)
         {
+            // Check for duplicate title before ModelState validation
             var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == bookVM.Book.Title.ToLower());
             if (existingBook != null)
             {
-                ModelState.AddModelError("Title", "The Book Already Exists");
+                ModelState.AddModelError("Book.Title", "The Book Already Exists");
             }
 
             if (ModelState.IsValid)
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if(file != null)
+                if (file != null)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string bookPath = Path.Combine(wwwRootPath, @"images\book");  
+                    string bookPath = Path.Combine(wwwRootPath, @"images\book\");
 
-                    using(var fileStream = new FileStream(Path.Combine(bookPath, fileName),FileMode.Create))
+                    using (var fileStream = new FileStream(Path.Combine(bookPath, fileName), FileMode.Create))
                     {
                         file.CopyTo(fileStream);
                     }
 
-                    bookVM.Book.ImageUrl = @"\images\product\" + fileName;
+                    bookVM.Book.ImageUrl = @"\images\book\" + fileName;
                 }
-
-
 
                 _unitOfWork.Book.Add(bookVM.Book);
                 _unitOfWork.Save();
                 TempData["success"] = "Book created successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+            else
+            {
+                // Repopulate dropdown lists for categories and authors
+                bookVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+                bookVM.AuthorList = _unitOfWork.Author.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.FullName,
+                    Value = u.Id.ToString()
+                });
+
+                // Return to the view with validation errors
+                return View(bookVM);
+            }
         }
 
 
