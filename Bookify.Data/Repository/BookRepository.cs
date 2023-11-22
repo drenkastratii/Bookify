@@ -17,7 +17,19 @@ namespace Bookify.Data.Repository
         }
         public void Update(Book obj)
         {
-            _db.Update(obj);
+            var objFromDb = _db.Books.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.Title = obj.Title;
+                objFromDb.Description = obj.Description;
+                objFromDb.Price = obj.Price;
+                objFromDb.CategoryId = obj.CategoryId;
+                objFromDb.AuthorId = obj.AuthorId;
+                if(obj.ImageUrl != null)
+                {
+                    objFromDb.ImageUrl = obj.ImageUrl; 
+                }
+            }
         }
     }
 }
