@@ -59,8 +59,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpSert(BookVM bookVM, IFormFile? file)
         {
-            var bookOnUpdating = _unitOfWork.Book.Get(c => c.Id == bookVM.Book.Id);
-            if (bookVM.Book.Id == 0 || bookOnUpdating!=null)
+            //var bookOnUpdating = _unitOfWork.Book.Get(c => c.Id == bookVM.Book.Id);
+            //if (bookVM.Book.Id == 0 || bookOnUpdating != null)
+                if (bookVM.Book.Id == 0)
             {
                 // Check for duplicate title before ModelState validation
                 var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == bookVM.Book.Title.ToLower());
@@ -100,15 +101,18 @@ namespace BookifyWeb.Areas.Admin.Controllers
                 if(bookVM.Book.Id == 0)
                 {
                     _unitOfWork.Book.Add(bookVM.Book);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Book created successfully";
                 }
                 else
                 {
-                    _unitOfWork.Book.Update(bookVM.Book);
+                    _unitOfWork.Book.Update(bookVM.Book); 
+                    _unitOfWork.Save();
+                    TempData["success"] = "Book updated successfully";
                 }
 
                 
-                _unitOfWork.Save();
-                TempData["success"] = "Book created successfully";
+                
                 return RedirectToAction("Index");
             }
             else
@@ -167,7 +171,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
             return Json(new {data = objBookList});
         }
 
-        
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
             var bookToBeDeleted = _unitOfWork.Book.Get(c => c.Id == id);
