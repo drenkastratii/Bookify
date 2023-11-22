@@ -59,7 +59,8 @@ namespace BookifyWeb.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpSert(BookVM bookVM, IFormFile? file)
         {
-            if(bookVM.Book.Id == 0)
+            var bookOnUpdating = _unitOfWork.Book.Get(c => c.Id == bookVM.Book.Id);
+            if (bookVM.Book.Id == 0 || bookOnUpdating!=null)
             {
                 // Check for duplicate title before ModelState validation
                 var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == bookVM.Book.Title.ToLower());
@@ -130,32 +131,32 @@ namespace BookifyWeb.Areas.Admin.Controllers
         }
 
 
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Book? bookFromDb = _unitOfWork.Book.Get(c => c.Id == id);
-            if (bookFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(bookFromDb);
-        }
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
-        {
-            Book? obj = _unitOfWork.Book.Get(c => c.Id == id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            _unitOfWork.Book.Remove(obj);
-            _unitOfWork.Save();
-            TempData["success"] = "Book deleted successfully";
-            return RedirectToAction("Index");
-        }
+        //public IActionResult Delete(int? id)
+        //{
+        //    if (id == null || id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    Book? bookFromDb = _unitOfWork.Book.Get(c => c.Id == id);
+        //    if (bookFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(bookFromDb);
+        //}
+        //[HttpPost, ActionName("Delete")]
+        //public IActionResult DeletePOST(int? id)
+        //{
+        //    Book? obj = _unitOfWork.Book.Get(c => c.Id == id);
+        //    if (obj == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    _unitOfWork.Book.Remove(obj);
+        //    _unitOfWork.Save();
+        //    TempData["success"] = "Book deleted successfully";
+        //    return RedirectToAction("Index");
+        //}
 
         #region API Calls
 
@@ -164,6 +165,29 @@ namespace BookifyWeb.Areas.Admin.Controllers
         {
             List<Book> objBookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author").ToList();
             return Json(new {data = objBookList});
+        }
+
+        
+        public IActionResult Delete(int? id)
+        {
+            var bookToBeDeleted = _unitOfWork.Book.Get(c => c.Id == id);
+            if(bookToBeDeleted == null)
+            {
+                return Json(new {success = false, message = "Error while deleting"});
+            }
+            //
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, bookToBeDeleted.ImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+
+            _unitOfWork.Book.Remove(bookToBeDeleted);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Deleted Successfully" });
+
         }
 
         #endregion
