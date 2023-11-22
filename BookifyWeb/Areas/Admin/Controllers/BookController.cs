@@ -156,6 +156,17 @@ namespace BookifyWeb.Areas.Admin.Controllers
             TempData["success"] = "Book deleted successfully";
             return RedirectToAction("Index");
         }
+
+        #region API Calls
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Book> objBookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author").ToList();
+            return Json(new {data = objBookList});
+        }
+
+        #endregion
     }
 }
 
