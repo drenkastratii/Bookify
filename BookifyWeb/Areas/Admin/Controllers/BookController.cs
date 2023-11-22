@@ -20,7 +20,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Book> objBookList = _unitOfWork.Book.GetAll().ToList();
+            List<Book> objBookList = _unitOfWork.Book.GetAll(includeProperties:"Category,Author").ToList();
             return View(objBookList);
         }
         public IActionResult UpSert(int? id)
