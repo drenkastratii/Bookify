@@ -23,6 +23,12 @@ namespace BookifyWeb.Areas.Customer.Controllers
             return View(bookList);
         }
 
+        public IActionResult Details(int id)
+        {
+            Book book = _unitOfWork.Book.Get(u => u.Id == id, includeProperties: "Category,Author");
+            return View(book);
+        }
+
         public IActionResult Privacy()
         {
             return View();
