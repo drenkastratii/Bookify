@@ -1,4 +1,5 @@
 ﻿using Bookify.Data.Repository.IRepository;
+using Bookify.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace Bookify.Data.Repository
         private readonly ApplicationDbContext _db;
         public ICategoryRepository Category { get; private set; }
         public IAuthorRepository Author { get; private set; }
-
         public IBookRepository Book { get; private set; }   
+        public IShoppingCartRepository ShoppingCart { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -21,6 +22,8 @@ namespace Bookify.Data.Repository
             Category = new CategoryRepository(_db);
             Author = new AuthorRepository(_db);
             Book = new BookRepository(_db);
+            ShoppingCart = new ShoppingCartRepository(_db);
+
         }
 
         public void Save()
