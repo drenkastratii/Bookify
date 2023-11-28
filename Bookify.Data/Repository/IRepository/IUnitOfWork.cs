@@ -12,6 +12,7 @@ namespace Bookify.Data.Repository.IRepository
         public IAuthorRepository Author { get; }
         public IBookRepository Book { get; }
         public IShoppingCartRepository ShoppingCart { get; }
+        public IApplicationUserRepository ApplicationUser { get; }
 
         void Save();
     }

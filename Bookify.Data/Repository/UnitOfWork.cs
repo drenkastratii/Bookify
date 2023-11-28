@@ -15,6 +15,7 @@ namespace Bookify.Data.Repository
         public IAuthorRepository Author { get; private set; }
         public IBookRepository Book { get; private set; }   
         public IShoppingCartRepository ShoppingCart { get; private set; }
+        public IApplicationUserRepository ApplicationUser { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
@@ -23,6 +24,7 @@ namespace Bookify.Data.Repository
             Author = new AuthorRepository(_db);
             Book = new BookRepository(_db);
             ShoppingCart = new ShoppingCartRepository(_db);
+            ApplicationUser = new ApplicationUserRepository(_db);
 
         }
 
