@@ -1,10 +1,13 @@
 ﻿using Bookify.Data.Repository.IRepository;
 using Bookify.Models;
+using Bookify.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookifyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
 
     public class CategoryController : Controller
     {

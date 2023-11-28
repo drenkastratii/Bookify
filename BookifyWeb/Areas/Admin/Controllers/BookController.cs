@@ -4,10 +4,13 @@ using Bookify.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net.Http.Headers;
+using Bookify.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookifyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
 
     public class BookController : Controller
     {
