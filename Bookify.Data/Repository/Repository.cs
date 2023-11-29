@@ -50,10 +50,14 @@ namespace Bookify.Data.Repository
         }
 
 
-        public IEnumerable<T> GetAll(string? includeProperties=null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties=null)
         {
             //includat i pranojna si vlera te ndame me presje 
             IQueryable<T> query = dbSet;
+            if(filter != null)
+            {
+                query = query.Where(filter);
+            }
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach(var includeProp in  includeProperties.Split
