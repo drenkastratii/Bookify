@@ -53,7 +53,7 @@ namespace BookifyWeb.Areas.Customer.Controllers
                 //add cart info
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
             }
-
+            TempData["success"] = "Cart updated successfully";
             _unitOfWork.Save();
 
 

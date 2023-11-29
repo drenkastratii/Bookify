@@ -24,9 +24,19 @@ namespace Bookify.Data.Repository
         {
             dbSet.Add(entity);
         }
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
-            IQueryable<T> query = dbSet;
+            IQueryable<T> query;
+
+            if (tracked)
+            {
+                query = dbSet;
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();
+            }
+
             query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
@@ -37,8 +47,9 @@ namespace Bookify.Data.Repository
                 }
             }
             return query.FirstOrDefault();
-
         }
+
+
         public IEnumerable<T> GetAll(string? includeProperties=null)
         {
             //includat i pranojna si vlera te ndame me presje 
