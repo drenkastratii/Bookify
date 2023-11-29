@@ -1,10 +1,9 @@
 using Bookify.Data.Repository.IRepository;
 using Bookify.Models;
-using Bookify.Utility;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BookifyWeb.Areas.Customer.Controllers
 {
@@ -13,46 +12,46 @@ namespace BookifyWeb.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        //private readonly UserManager<IdentityUser> _userManager;
-
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork/*, UserManager<IdentityUser> userManager*/)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
-            //_userManager = userManager;
         }
-
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             IEnumerable<Book> bookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author");
-            //var user = await _userManager.GetUserAsync(User) as ApplicationUser;
-            //if (user != null)
-            //{
-            //    var role = await _userManager.GetRolesAsync(user);
-            //    if (role.FirstOrDefault() == SD.Role_Admin)
-            //    {
-            //        return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
-            //    }
-            //}
             return View(bookList);
         }
-
-        public IActionResult Details(int id)
+        public IActionResult Details(int bookId)
         {
             ShoppingCart cart = new()
             {
-                Book = _unitOfWork.Book.Get(u => u.Id == id, includeProperties: "Category,Author"),
+                Book = _unitOfWork.Book.Get(u => u.Id == bookId, includeProperties: "Category,Author"),
                 Count = 1,
-                BookId = id
+                BookId = bookId
             };
             return View(cart);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCart.ApplicationUserId = userId;
+
+            _unitOfWork.ShoppingCart.Add(shoppingCart);
+            _unitOfWork.Save();
+
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()
         {
             return View();
         }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

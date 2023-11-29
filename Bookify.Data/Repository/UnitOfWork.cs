@@ -10,7 +10,7 @@ namespace Bookify.Data.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationDbContext _db;
+        private ApplicationDbContext _db;
         public ICategoryRepository Category { get; private set; }
         public IAuthorRepository Author { get; private set; }
         public IBookRepository Book { get; private set; }   
