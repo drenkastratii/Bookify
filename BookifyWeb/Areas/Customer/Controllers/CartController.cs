@@ -1,4 +1,5 @@
 ﻿using Bookify.Data.Repository.IRepository;
+using Bookify.Models;
 using Bookify.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,12 @@ namespace BookifyWeb.Areas.Customer.Controllers
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Book")
             };
+
+            foreach(var cart in ShoppingCartVM.ShoppingCartList)
+            {
+                double price = cart.Book.Price;
+                ShoppingCartVM.OrderTotal += price*(cart.Count);
+            }
 
             return View(ShoppingCartVM);
         }
