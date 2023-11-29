@@ -33,7 +33,7 @@ namespace BookifyWeb.Areas.Customer.Controllers
 
             foreach(var cart in ShoppingCartVM.ShoppingCartList)
             {
-                double price = cart.Book.Price;
+                var price = cart.Book.Price;
                 ShoppingCartVM.OrderTotal += price*(cart.Count);
             }
 

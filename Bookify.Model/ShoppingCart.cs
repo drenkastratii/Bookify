@@ -24,7 +24,10 @@ namespace Bookify.Models
         public ApplicationUser ApplicationUser { get; set; }
 
         [Range(1, 1000, ErrorMessage = "The quantity should be between 1 and 1000")]
-        public int Count { get; set; }  
+        public int Count { get; set; }
+
+        [NotMapped]
+        public double Price {  get; set; }
 
 
     }
