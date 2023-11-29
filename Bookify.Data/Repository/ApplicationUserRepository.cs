@@ -15,9 +15,5 @@ namespace Bookify.Data.Repository
         {
             _db = db;
         }
-        public void Update(ApplicationUser obj)
-        {
-            _db.Update(obj);
-        }
     }
 }

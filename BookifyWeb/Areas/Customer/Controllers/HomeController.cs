@@ -39,8 +39,13 @@ namespace BookifyWeb.Areas.Customer.Controllers
 
         public IActionResult Details(int id)
         {
-            Book book = _unitOfWork.Book.Get(u => u.Id == id, includeProperties: "Category,Author");
-            return View(book);
+            ShoppingCart cart = new()
+            {
+                Book = _unitOfWork.Book.Get(u => u.Id == id, includeProperties: "Category,Author"),
+                Count = 1,
+                BookId = id
+            };
+            return View(cart);
         }
 
         public IActionResult Privacy()

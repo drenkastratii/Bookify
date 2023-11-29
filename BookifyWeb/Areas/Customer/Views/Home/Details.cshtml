@@ -1,12 +1,12 @@
-﻿@model Book
+﻿@model ShoppingCart
 
 <form method="post">
     <div class="card shadow border-0 mt-4 mb-4">
         <div class="card-header bg-secondary bg-gradient text-light py-4">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h3 class="text-white text-uppercase">@Model.Title</h3>
-                    <p class="text-white-50 fw-semibold mb-0">by @Model.Author.FullName</p>
+                    <h3 class="text-white text-uppercase">@Model.Book.Title</h3>
+                    <p class="text-white-50 fw-semibold mb-0">by @Model.Book.Author.FullName</p>
                 </div>
             </div>
         </div>
@@ -21,24 +21,24 @@
                 </div>
                 <div class="row">
                     <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                        <img src="@Model.ImageUrl" width="100%" class="rounded" />
+                        <img src="@Model.Book.ImageUrl" width="100%" class="rounded" />
                     </div>
                     <div class="col-12 col-lg-6 offset-lg-1">
 
                         <div class="col-12 col-md-6 pb-4">
-                            <span class="badge">@Model.Category.Name</span>
+                            <span class="badge">@Model.Book.Category.Name</span>
                         </div>
                         <div class="col-12 col-md-6 pb-4">
-                            <b>Author:</b> <span class="badge text-bg-info">@Model.Author.FullName</span>
+                            <b>Author:</b> <span class="badge text-bg-info">@Model.Book.Author.FullName</span>
                         </div>
                         <div class="row pl-2 ">
-                            <p class="text-secondary lh-sm">@Model.Description</p>
+                            <p class="text-secondary lh-sm">@Model.Book.Description</p>
                         </div>
                         <div class="row">
                             <h4 class="text-dark text-opacity-50  pb-2">
                                 Price:
                                 <span>
-                                    @Model.Price.ToString("c")
+                                    @Model.Book.Price.ToString("c")
                                 </span>
                             </h4>
                         </div>
@@ -49,7 +49,7 @@
                                           id="inputGroup-sizing-default">
                                         Quntity
                                     </span>
-                                    <input type="number" value="1" class="form-control text-center"
+                                    <input asp-for="Count" type="number" value="1" class="form-control text-center"
                                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
 
                                 </div>
@@ -57,8 +57,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-md-6 pb-1">
-                                <button type="submit" disabled
-                                        class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
+                                <button type="submit" class="btn btn-primary bg-gradient  w-100 py-2 text-uppercase fw-semibold">
                                     Add to Cart 
                                 </button>
                             </div>
