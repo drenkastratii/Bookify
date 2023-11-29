@@ -41,7 +41,19 @@ namespace BookifyWeb.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             shoppingCart.ApplicationUserId = userId;
 
-            _unitOfWork.ShoppingCart.Add(shoppingCart);
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.BookId == shoppingCart.BookId);
+            if(cartFromDb != null)
+            {
+                //shopping cart already exists
+                cartFromDb.Count += shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+            }
+            else
+            {
+                //add cart info
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+            }
+
             _unitOfWork.Save();
 
 
