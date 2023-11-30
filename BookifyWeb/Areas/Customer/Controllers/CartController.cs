@@ -1,6 +1,7 @@
 ﻿using Bookify.Data.Repository.IRepository;
 using Bookify.Models;
 using Bookify.Models.ViewModels;
+using Bookify.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Text;
@@ -13,7 +14,8 @@ namespace BookifyWeb.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ShoppingCartVM ShoppingCartVM;
+        [BindProperty]
+        public ShoppingCartVM ShoppingCartVM { get; set; }
         public CartController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -79,7 +81,7 @@ namespace BookifyWeb.Areas.Customer.Controllers
             ShoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
             ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
-            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+            ApplicationUser applicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
 
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
