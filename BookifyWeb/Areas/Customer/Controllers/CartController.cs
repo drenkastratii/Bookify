@@ -159,6 +159,14 @@ namespace BookifyWeb.Areas.Customer.Controllers
                 _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved);
                 _unitOfWork.Save();
             }
+
+            //after payment status approved remove items from cart
+            List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            _unitOfWork.Save();
+
             return View(id);
         }
 
