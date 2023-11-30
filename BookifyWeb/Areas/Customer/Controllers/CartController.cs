@@ -26,13 +26,14 @@ namespace BookifyWeb.Areas.Customer.Controllers
 
             ShoppingCartVM = new()
             {
-                ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Book")
+                ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Book"),
+                OrderHeader = new()
             };
 
             foreach(var cart in ShoppingCartVM.ShoppingCartList)
             {
                 var price = cart.Book.Price;
-                ShoppingCartVM.OrderTotal += price*(cart.Count);
+                ShoppingCartVM.OrderHeader.OrderTotal += price*(cart.Count);
             }
 
             return View(ShoppingCartVM);
