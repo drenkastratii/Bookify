@@ -21,6 +21,8 @@ namespace Bookify.Models
         public double OrderTotal { get; set; }
 
         public string? OrderStatus { get; set; }
+
+        public string? SessionId { get; set; }
         public string? PayementIntentId { get; set; }
 
         [Required]

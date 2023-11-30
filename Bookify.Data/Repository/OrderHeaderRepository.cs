@@ -21,5 +21,28 @@ namespace Bookify.Data.Repository
         {
             _db.Update(obj);
         }
+
+        public void UpdateStatus(int id, string orderStatus)
+        {
+            var orderFromDb = _db.OrderHeaders.FirstOrDefault(x => x.Id == id);
+            if (orderFromDb != null)
+            {
+                orderFromDb.OrderStatus = orderStatus;
+            }
+        }
+
+        public void UpdateStripePaymentId(int id, string sessionId, string paymentIntentId)
+        {
+            var orderFromDb = _db.OrderHeaders.FirstOrDefault(x => x.Id == id);
+            if (!string.IsNullOrEmpty(sessionId))
+            {
+                orderFromDb.SessionId = sessionId;
+            }
+
+            if (!string.IsNullOrEmpty(paymentIntentId))
+            {
+                orderFromDb.PayementIntentId = paymentIntentId;
+            }
+        }
     }
 }
