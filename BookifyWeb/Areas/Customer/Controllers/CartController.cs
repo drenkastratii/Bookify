@@ -147,6 +147,18 @@ namespace BookifyWeb.Areas.Customer.Controllers
 
         public IActionResult OrderConfirmation(int id)
         {
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == id, includeProperties: "ApplicationUser");
+
+            //checking the payment status
+            var service = new SessionService();
+            Session session = service.Get(orderHeader.SessionId);
+
+            if (session.PaymentStatus.ToLower() == "paid")
+            {
+                _unitOfWork.OrderHeader.UpdateStripePaymentId(id, session.Id, session.PaymentIntentId);
+                _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusApproved);
+                _unitOfWork.Save();
+            }
             return View(id);
         }
 
