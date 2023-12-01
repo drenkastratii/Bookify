@@ -101,7 +101,7 @@ namespace BookifyWeb.Areas.Customer.Controllers
                 {
                     BookId = cart.BookId,
                     OrderHeaderId = ShoppingCartVM.OrderHeader.Id,
-                    Price = cart.Price,
+                    Price = cart.Book.Price,
                     Count = cart.Count
                 };
                 _unitOfWork.OrderDetail.Add(orderDetail);
