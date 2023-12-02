@@ -31,7 +31,8 @@ namespace BookifyWeb.Areas.Customer.Controllers
                 var role = await _userManager.GetRolesAsync(user);
                 if (role.FirstOrDefault() == SD.Role_Admin)
                 {
-                    return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
+                    //return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
+                    return RedirectToAction("Index", "Order", new { area = "Admin" });
                 }
 
             }
