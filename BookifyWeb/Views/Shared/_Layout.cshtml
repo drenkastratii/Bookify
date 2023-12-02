@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
 </head>
 <body>
     <header>
@@ -25,9 +25,9 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                            
-                        
-                            
+
+
+
                         @if (User.IsInRole(SD.Role_Admin))
                         {
                             <li class="nav-item dropdown">
@@ -51,32 +51,18 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
-
-                            @if (HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionCart) != null)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                        <i class="bi bi-cart"></i> &nbsp;
-                                        (@HttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionCart))
-                                    </a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                        <i class="bi bi-cart"></i> &nbsp;
-                                        (0)
-                                    </a>
-                                </li>
-                            }
                         }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                @await Component.InvokeAsync("ShoppingCart")
+                            </a>
+                        </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
                             </li>
-                        } 
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -91,9 +77,9 @@
     </div>
 
     @* <footer class="border-top footer bg-primary text-muted">
-        <div class="text-center text-light">
-            Bookify <i class="bi bi-book"></i>
-        </div>
+    <div class="text-center text-light">
+    Bookify <i class="bi bi-book"></i>
+    </div>
     </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
