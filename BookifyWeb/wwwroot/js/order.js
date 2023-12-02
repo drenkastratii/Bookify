@@ -1,17 +1,39 @@
 ﻿var dataTable;
 
 $(document).ready(function () {
-    loadDataTable();
+    var url = window.location.search;
+    if (url.includes("approved")) {
+        loadDataTable("approved");
+    }
+    else {
+        if (url.includes("inprocess")) {
+            loadDataTable("inprocess");
+        }
+        else {
+            if (url.includes("shipped")) {
+                loadDataTable("shipped");
+            }
+            else {
+                if (url.includes("cancelled")) {
+                    loadDataTable("cancelled");
+                }
+                else {
+                    loadDataTable("all");
+                }
+            }
+        }
+    }
+
 });
 
-function loadDataTable() {
+function loadDataTable(status) {
     dataTable = $('#tblData').DataTable({
-        "ajax": { url: '/admin/order/getall' },
+        "ajax": { url: '/admin/order/getall?status=' + status },
         "columns": [
             { data: 'id', "width": "5%" },
-            { data: 'name', "width": "15%" },
+            { data: 'name', "width": "25%" },
             { data: 'phoneNumber', "width": "20%" },
-            { data: 'applicationUser.email', "width": "15%" },
+            { data: 'applicationUser.email', "width": "20%" },
             { data: 'orderStatus', "width": "10%" },
             { data: 'orderTotal', "width": "10%" },
             {
@@ -22,7 +44,7 @@ function loadDataTable() {
                     
                     </div>`
                 },
-                "width": "25%"
+                "width": "10%"
             }
         ]
     });
