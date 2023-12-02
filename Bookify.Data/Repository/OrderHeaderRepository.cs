@@ -22,7 +22,7 @@ namespace Bookify.Data.Repository
             _db.Update(obj);
         }
 
-        public void UpdateStatus(int id, string orderStatus)
+        public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
         {
             var orderFromDb = _db.OrderHeaders.FirstOrDefault(x => x.Id == id);
             if (orderFromDb != null)
