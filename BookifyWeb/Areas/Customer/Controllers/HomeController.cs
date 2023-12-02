@@ -25,16 +25,16 @@ namespace BookifyWeb.Areas.Customer.Controllers
         {
             IEnumerable<Book> bookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author");
 
-            //var user = await _userManager.GetUserAsync(User) as ApplicationUser;
-            //if (user != null)
-            //{
-            //    var role = await _userManager.GetRolesAsync(user);
-            //    if (role.FirstOrDefault() == SD.Role_Admin)
-            //    {
-            //        return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
-            //    }
+            var user = await _userManager.GetUserAsync(User) as ApplicationUser;
+            if (user != null)
+            {
+                var role = await _userManager.GetRolesAsync(user);
+                if (role.FirstOrDefault() == SD.Role_Admin)
+                {
+                    return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
+                }
 
-            //}
+            }
 
             return View(bookList);
         }
