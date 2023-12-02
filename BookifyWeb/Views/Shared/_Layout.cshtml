@@ -27,9 +27,6 @@
                             
                         @if (User.IsInRole(SD.Role_Admin))
                         {
-                            <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
-                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Management</a>
                                 <ul class="dropdown-menu">
@@ -58,7 +55,13 @@
                                 </a>
                             </li>
                         }
-                        
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
+                            </li>
+                        }
+
                             
                         
 
