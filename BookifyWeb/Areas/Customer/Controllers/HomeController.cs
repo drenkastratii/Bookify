@@ -24,14 +24,6 @@ namespace BookifyWeb.Areas.Customer.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-
-            if (claim != null)
-            {
-                HttpContext.Session.SetInt32(SD.SessionCart,
-                _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
-            }
             IEnumerable<Book> bookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author");
 
             var user = await _userManager.GetUserAsync(User) as ApplicationUser;
