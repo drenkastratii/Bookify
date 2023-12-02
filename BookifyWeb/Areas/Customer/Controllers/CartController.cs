@@ -12,7 +12,7 @@ using System.Security.Claims;
 namespace BookifyWeb.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize]
+    [Authorize(Roles = SD.Role_Customer)]
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
