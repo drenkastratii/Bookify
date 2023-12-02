@@ -11,6 +11,7 @@ using System.Security.Claims;
 namespace BookifyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -54,6 +55,19 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
 
             return RedirectToAction(nameof(Details), new { orderId = orderHeaderFromDb.Id });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin)]
+        public IActionResult StartProcessing()
+        {
+            _unitOfWork.OrderHeader.UpdateStatus(OrderVM.OrderHeader.Id, SD.StatusInProcess);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "Order Details Updated Successfully.";
+
+
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
         }
 
         #region API Calls
