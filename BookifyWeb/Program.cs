@@ -29,6 +29,16 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("NonAdminAccess", policy =>
+    {
+        policy.RequireAssertion(context =>
+            !context.User.Identity.IsAuthenticated || // Allow non-authenticated users
+            context.User.IsInRole(SD.Role_Customer)); // Allow users with the role SD.Role_Customer
+    });
+});
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
     options.IdleTimeout = TimeSpan.FromMinutes(100);

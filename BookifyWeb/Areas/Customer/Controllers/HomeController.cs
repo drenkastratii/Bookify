@@ -40,7 +40,8 @@ namespace BookifyWeb.Areas.Customer.Controllers
 
             return View(bookList);
         }
-        [Authorize(Roles = SD.Role_Customer)]  
+        
+        [Authorize(Policy = "NonAdminAccess")]
         public IActionResult Details(int bookId)
         {
             ShoppingCart cart = new()
