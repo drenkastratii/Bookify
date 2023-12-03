@@ -24,21 +24,25 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
         #region API CALLS
 
-        [HttpGet]
         public IActionResult GetAll()
         {
-            List<ApplicationUser> objUserList = _db.ApplicationUsers.ToList();
+            List<ApplicationUser> objUserList = _db.ApplicationUsers
+                .Where(u => _db.UserRoles.Any(ur => ur.UserId == u.Id &&
+                                                     _db.Roles.Any(r => r.Id == ur.RoleId && r.Name == "customer")))
+                .ToList();
 
             var userRoles = _db.UserRoles.ToList();
             var roles = _db.Roles.ToList();
 
             foreach (var user in objUserList)
             {
-                var roleId = userRoles.FirstOrDefault(u => u.UserId == user.Id).RoleId;
-                user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;
+                var roleId = userRoles.FirstOrDefault(u => u.UserId == user.Id)?.RoleId;
+                user.Role = roles.FirstOrDefault(r => r.Id == roleId)?.Name;
             }
-                return Json(new { data = objUserList });
+
+            return Json(new { data = objUserList });
         }
+
 
 
         [HttpPost]
@@ -61,7 +65,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
                 objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
             }
             _db.SaveChanges();
-            return Json(new { success = true, message = "Delete Successful" });
+            return Json(new { success = true, message = "Option Successful" });
         }
 
         #endregion

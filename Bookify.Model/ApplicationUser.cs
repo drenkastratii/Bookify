@@ -19,6 +19,5 @@ namespace Bookify.Models
         public string? PostalCode { get; set; }
         [NotMapped]
         public string Role { get; set; }
-
     }
 }
