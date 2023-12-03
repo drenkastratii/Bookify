@@ -91,7 +91,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
         {
             var orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id); 
 
-            if(orderHeader.OrderStatus == SD.StatusApproved)
+            if(orderHeader.OrderStatus == SD.StatusApproved || orderHeader.OrderStatus == SD.StatusInProcess)
             {
                 var options = new RefundCreateOptions
                 {
@@ -101,14 +101,10 @@ namespace BookifyWeb.Areas.Admin.Controllers
                 var service = new RefundService();
                 Refund refund = service.Create(options);
                 _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatusRefunded);
+                _unitOfWork.Save();
 
             }
-            else
-            {
-                _unitOfWork.OrderHeader.UpdateStatus(orderHeader.Id, SD.StatusCancelled, SD.StatusCancelled);
-            }
-            _unitOfWork.OrderHeader.UpdateStatus(OrderVM.OrderHeader.Id, SD.StatusCancelled);
-            _unitOfWork.Save();
+
 
             TempData["Success"] = "Order Cancelled Successfully.";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
