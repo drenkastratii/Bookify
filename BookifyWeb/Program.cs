@@ -1,4 +1,5 @@
 using Bookify.Data;
+using Bookify.Data.DBInitializer;
 using Bookify.Data.Repository;
 using Bookify.Data.Repository.IRepository;
 using Bookify.Utility;
@@ -35,6 +36,8 @@ builder.Services.AddSession(options => {
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
@@ -62,6 +65,7 @@ app.UseRouting();
 app.UseAuthentication(); //e vendosim para autorizimit
 app.UseAuthorization();
 app.UseSession();
+SeedDatabase();
 app.MapRazorPages(); //per mapimin e razor pages, pasi identity perdor razor pages per front-end
 
 app.MapControllerRoute(
@@ -70,3 +74,11 @@ app.MapControllerRoute(
 
 
 app.Run();
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}
