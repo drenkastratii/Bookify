@@ -1,8 +1,11 @@
 ﻿using Bookify.Data;
+using Bookify.Data.Repository.IRepository;
 using Bookify.Models;
 using Bookify.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BookifyWeb.Areas.Admin.Controllers
 {
@@ -10,10 +13,13 @@ namespace BookifyWeb.Areas.Admin.Controllers
     [Authorize(Roles = SD.Role_Admin)]
     public class UserController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public UserController(ApplicationDbContext db)
+        //private readonly ApplicationDbContext _db;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
+        public UserController(UserManager<IdentityUser> userManager, IUnitOfWork unitOfWork, RoleManager<IdentityRole> roleManager)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -24,23 +30,20 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
         #region API CALLS
 
+        [HttpGet]
         public IActionResult GetAll()
         {
-            List<ApplicationUser> objUserList = _db.ApplicationUsers
-                .Where(u => _db.UserRoles.Any(ur => ur.UserId == u.Id &&
-                                                     _db.Roles.Any(r => r.Id == ur.RoleId && r.Name == "customer")))
-                .ToList();
-
-            var userRoles = _db.UserRoles.ToList();
-            var roles = _db.Roles.ToList();
+            List<ApplicationUser> objUserList = _unitOfWork.ApplicationUser.GetAll().ToList();
 
             foreach (var user in objUserList)
             {
-                var roleId = userRoles.FirstOrDefault(u => u.UserId == user.Id)?.RoleId;
-                user.Role = roles.FirstOrDefault(r => r.Id == roleId)?.Name;
+                user.Role = _userManager.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault();
             }
 
-            return Json(new { data = objUserList });
+            // Filter users with the role "Customer"
+            var customerUsers = objUserList.Where(u => u.Role == "Customer").ToList();
+
+            return Json(new { data = customerUsers });
         }
 
 
@@ -49,7 +52,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
         public IActionResult LockUnlock([FromBody] string id)
         {
 
-            var objFromDb = _db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
+            var objFromDb = _unitOfWork.ApplicationUser.Get(u => u.Id == id);
             if (objFromDb == null)
             {
                 return Json(new { success = false, message = "Error while Locking/Unlocking" });
@@ -64,8 +67,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
             {
                 objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
             }
-            _db.SaveChanges();
-            return Json(new { success = true, message = "Option Successful" });
+            _unitOfWork.ApplicationUser.Update(objFromDb);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Operation Successful" });
         }
 
         #endregion
