@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -24,12 +25,14 @@ namespace Bookify.Models
         [Required]
         [Range(1, 100)]
         public double Price { get; set; }
-
+        [DisplayName("Category")]
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         [ValidateNever]
         public Category Category { get; set; }
 
+
+        [DisplayName("Author")]
         public int AuthorId { get; set; }
         [ForeignKey("AuthorId")]
         [ValidateNever]
