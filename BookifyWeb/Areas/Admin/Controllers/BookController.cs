@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net.Http.Headers;
 using Bookify.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookifyWeb.Areas.Admin.Controllers
 {
@@ -62,9 +63,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UpSert(BookVM bookVM, IFormFile? file)
         {
-            //var bookOnUpdating = _unitOfWork.Book.Get(c => c.Id == bookVM.Book.Id);
-            //if (bookVM.Book.Id == 0 || bookOnUpdating != null)
-                if (bookVM.Book.Id == 0)
+            
+            // kushti per create
+            if (bookVM.Book.Id == 0)
             {
                 // Check for duplicate title before ModelState validation
                 var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == bookVM.Book.Title.ToLower());
@@ -73,7 +74,18 @@ namespace BookifyWeb.Areas.Admin.Controllers
                     ModelState.AddModelError("Book.Title", "The Book Already Exists");
                 }
             }
-            
+
+            //kushti per update
+            if (bookVM.Book.Id != 0)
+            {
+                // Check for duplicate title before ModelState validation
+                var existingBook = _unitOfWork.Book.Get(c => c.Title.ToLower() == bookVM.Book.Title.ToLower() && c.Id != bookVM.Book.Id);
+                if (existingBook != null)
+                {
+                    ModelState.AddModelError("Book.Title", "The Book Already Exists");
+                }
+            }
+
 
             if (ModelState.IsValid)
             {
@@ -109,9 +121,20 @@ namespace BookifyWeb.Areas.Admin.Controllers
                 }
                 else
                 {
-                    _unitOfWork.Book.Update(bookVM.Book); 
-                    _unitOfWork.Save();
-                    TempData["success"] = "Book updated successfully";
+                    //var book = bookVM.Book;
+                    //var getForUpdate = _unitOfWork.Book.Get(x => x.Title == book.Title && x.Id != book.Id);
+                    //if(getForUpdate != null)
+                    //{
+                    //    ModelState.AddModelError("Book.Title", "The Book Already Exists");
+                    //    return View(bookVM);
+                    //}
+                    //else
+                    //{
+                        _unitOfWork.Book.Update(bookVM.Book);
+                        _unitOfWork.Save();
+                        TempData["success"] = "Book updated successfully";
+                    //}
+                    
                 }
 
                 
