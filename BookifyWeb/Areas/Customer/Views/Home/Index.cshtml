@@ -1,6 +1,24 @@
 ﻿@model IEnumerable<Book>
 
 <div class="row pb-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <form asp-action="Index" asp-controller="Home" method="get">
+                <div class="input-group align-items-center">
+                    <!-- Add align-items-center class -->
+                    <input type="text" class="form-control" placeholder="Search for books..." name="searchString" value="@ViewData["CurrentFilter"]" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <span class="bi bi-search"></span> <!-- Bootstrap search icon -->
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
     @foreach (var book in Model)
     {
         <div class="col-lg-3 col-sm-6">
