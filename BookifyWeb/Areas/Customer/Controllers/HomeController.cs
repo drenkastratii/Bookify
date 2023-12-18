@@ -22,9 +22,28 @@ namespace BookifyWeb.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            IEnumerable<Book> bookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author");
+            IEnumerable<Book> bookList;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // If search string is provided, filter books based on the title or author
+                bookList = _unitOfWork.Book.GetAll(
+                    filter: b => b.Title.ToLower().Contains(searchString.ToLower()) || b.Author.FullName.ToLower().Contains(searchString.ToLower()),
+                    includeProperties: "Category,Author"
+                );
+                if (!bookList.Any())
+                {
+                    bookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author");
+                    TempData["warning"] = "No books or authors were found!";
+                }
+            }
+            else
+            {
+                // If no search string, get all books
+                bookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author");
+            }
 
             var user = await _userManager.GetUserAsync(User) as ApplicationUser;
             if (user != null)
@@ -35,12 +54,13 @@ namespace BookifyWeb.Areas.Customer.Controllers
                     //return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
                     return RedirectToAction("Index", "Order", new { area = "Admin" });
                 }
-
             }
 
+            // Pass the filtered or unfiltered book list to the view
             return View(bookList);
         }
-        
+
+
         [Authorize(Policy = "NonAdminAccess")]
         public IActionResult Details(int bookId)
         {
