@@ -80,34 +80,32 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
         }
 
+        #region API Calls
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Author> objAuthList = _unitOfWork.Author.GetAll().ToList();
+            return Json(new { data = objAuthList });
+        }
+
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
-            if (id == null || id == 0)
+            var authorToBeDeleted = _unitOfWork.Author.Get(c => c.Id == id);
+            if (authorToBeDeleted == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
-            Author? authFromDb = _unitOfWork.Author.Get(c => c.Id == id);
-            if (authFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(authFromDb);
-        }
 
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
-        {
-            Author? obj = _unitOfWork.Author.Get(c => c.Id == id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            _unitOfWork.Author.Remove(obj);
+            _unitOfWork.Author.Remove(authorToBeDeleted);
             _unitOfWork.Save();
-            TempData["success"] = "Author deleted successfully";
-            return RedirectToAction("Index");
+
+            return Json(new { success = true, message = "Deleted Successfully" });
+
         }
 
+        #endregion
 
     }
 }
