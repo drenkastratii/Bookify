@@ -6,7 +6,7 @@
             <form asp-action="Index" asp-controller="Home" method="get">
                 <div class="input-group align-items-center">
                     <!-- Add align-items-center class -->
-                    <input type="text" class="form-control" placeholder="Search for books..." name="searchString" value="@ViewData["CurrentFilter"]" />
+                    <input type="text" class="form-control m-1 rounded" placeholder="Search for books..." name="searchString" value="@ViewData["CurrentFilter"]" />
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="submit">
                             <span class="bi bi-search"></span> <!-- Bootstrap search icon -->
@@ -28,8 +28,8 @@
                         <img src="@book.ImageUrl" class="card-img-top rounded" />
                         <div class="card-body pb-0">
                             <div class="pl-1">
-                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@book.Title</p>
-                                <p class="card-title text-dark text-center">by <b>@book.Author.FullName</b></p>
+                                <p class="card-title h6 text-dark opacity-75 text-uppercase text-center"><b>@book.Title</b></p>
+                                <p class="card-title text-dark text-center">by: <b>@book.Author.FullName</b></p>
                                 <p class="card-title text-warning text-center">Category: <b>@book.Category.Name</b></p>
                             </div>
                             <div class="pl-1">
