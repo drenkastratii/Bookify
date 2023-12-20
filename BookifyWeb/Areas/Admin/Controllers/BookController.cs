@@ -64,7 +64,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
         public IActionResult UpSert(BookVM bookVM, IFormFile? file)
         {
             
-            // kushti per create
+            // name validation for create
             if (bookVM.Book.Id == 0)
             {
                 // Check for duplicate title before ModelState validation
@@ -75,7 +75,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
                 }
             }
 
-            //kushti per update
+            // name validatino for update
             if (bookVM.Book.Id != 0)
             {
                 // Check for duplicate title before ModelState validation
@@ -120,25 +120,12 @@ namespace BookifyWeb.Areas.Admin.Controllers
                     TempData["success"] = "Book created successfully";
                 }
                 else
-                {
-                    //var book = bookVM.Book;
-                    //var getForUpdate = _unitOfWork.Book.Get(x => x.Title == book.Title && x.Id != book.Id);
-                    //if(getForUpdate != null)
-                    //{
-                    //    ModelState.AddModelError("Book.Title", "The Book Already Exists");
-                    //    return View(bookVM);
-                    //}
-                    //else
-                    //{
-                        _unitOfWork.Book.Update(bookVM.Book);
-                        _unitOfWork.Save();
-                        TempData["success"] = "Book updated successfully";
-                    //}
-                    
+                {                    
+                    _unitOfWork.Book.Update(bookVM.Book);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Book updated successfully";
                 }
 
-                
-                
                 return RedirectToAction("Index");
             }
             else
@@ -155,38 +142,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
                     Value = u.Id.ToString()
                 });
 
-                // Return to the view with validation errors
                 return View(bookVM);
             }
         }
-
-
-        //public IActionResult Delete(int? id)
-        //{
-        //    if (id == null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Book? bookFromDb = _unitOfWork.Book.Get(c => c.Id == id);
-        //    if (bookFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(bookFromDb);
-        //}
-        //[HttpPost, ActionName("Delete")]
-        //public IActionResult DeletePOST(int? id)
-        //{
-        //    Book? obj = _unitOfWork.Book.Get(c => c.Id == id);
-        //    if (obj == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    _unitOfWork.Book.Remove(obj);
-        //    _unitOfWork.Save();
-        //    TempData["success"] = "Book deleted successfully";
-        //    return RedirectToAction("Index");
-        //}
 
         #region API Calls
 

@@ -2,6 +2,7 @@
 using Bookify.Models;
 using Bookify.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookifyWeb.Areas.Admin.Controllers
@@ -79,31 +80,31 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
         }
 
+        #region API Calls
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
+            return Json(new { data = objCategoryList });
+        }
+
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
-            if (id == null || id == 0)
+            var categoryToBeDeleted = _unitOfWork.Category.Get(c => c.Id == id);
+            if (categoryToBeDeleted == null)
             {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
-            Category? categoryFromDb = _unitOfWork.Category.Get(c => c.Id == id);
-            if (categoryFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(categoryFromDb);
-        }
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int? id)
-        {
-            Category? obj = _unitOfWork.Category.Get(c => c.Id == id);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            _unitOfWork.Category.Remove(obj);
+           
+            _unitOfWork.Category.Remove(categoryToBeDeleted);
             _unitOfWork.Save();
-            TempData["success"] = "Category deleted successfully";
-            return RedirectToAction("Index");
+
+            return Json(new { success = true, message = "Deleted Successfully" });
+
         }
+
+        #endregion
     }
 }
