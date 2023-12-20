@@ -11,43 +11,24 @@
     <div class="card-body p-4">
         <div class="row pb-3">
             <div class="col-6">
-              
             </div>
             <div class="col-6 text-end">
                 <a asp-controller="Author" asp-action="Create" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i>  Create New Author
+                    <i class="bi bi-plus-circle"></i>   Add New Author
                 </a>
             </div>
         </div>
-
-
-        <table class="table table-bordered table-striped">
+        <table id="tblData" class="table table-bordered table-striped" style="width:100%">
             <thead>
                 <tr>
-
-                    <th>
-                        Author Full Name
-                    </th>
+                    <th>Author</th>
+                    <th></th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var obj in Model)
-                {
-                    <tr>
-                        <td>@obj.FullName</td>
-                        <td>
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-controller="Author" asp-action="Edit" asp-route-Id="@obj.Id" class="btn btn-primary mx-2">
-                                    <i class="bi bi-pencil-square"></i>Edit
-                                </a>
-                                <a asp-controller="Author" asp-action="Delete" asp-route-Id="@obj.Id" class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash-fill"></i>Delete
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
         </table>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/author.js"></script>
+}
