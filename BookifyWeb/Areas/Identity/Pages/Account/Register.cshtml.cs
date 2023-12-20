@@ -100,6 +100,8 @@ namespace BookifyWeb.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            
+            [Required]
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -110,12 +112,21 @@ namespace BookifyWeb.Areas.Identity.Pages.Account
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
             [Required]
+            [Display(Name = "Full Name")]
             public string Name { get; set; }
-            public string? StreetAddress { get; set; }
-            public string? City { get; set; }
-            public string? State { get; set; }
+            [Required]
+            [Display(Name = "Street Address")]
+            public string StreetAddress { get; set; }
+            [Required]
+            public string City { get; set; }
+            [Required]
+            public string State { get; set; }
+            [Required]
+            [Display(Name = "Postal Code")]
             public string? PostalCode { get; set; }
-            public string? PhoneNumber { get; set; }
+            [Required]
+            [Display(Name = "Phone Number")]
+            public string PhoneNumber { get; set; }
         }
 
 
