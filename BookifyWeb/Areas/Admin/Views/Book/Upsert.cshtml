@@ -19,36 +19,36 @@
                         <div class="border p-3">
                             <div class="form-floating py-2 col-12">
                                 <input asp-for="Book.Title" class="form-control border-0 shadow" />
-                                <label asp-for="Book.Title" class="ms-2"></label>
+                                <label asp-for="Book.Title" ></label>
                                 <span asp-validation-for="Book.Title" class="text-danger"></span>
                             </div>
                             <div class="form-floating py-2 col-12">
                                 <textarea asp-for="Book.Description" class="form-control border-0 shadow"></textarea>
-                                <label asp-for="Book.Description" class="ms-2"></label>
+                                <label asp-for="Book.Description" ></label>
                                 <span asp-validation-for="Book.Description" class="text-danger"></span>
                             </div>
                             <div class="form-floating py-2 col-12">
                                 <input asp-for="Book.Price" class="form-control border-0 shadow" />
-                                <label asp-for="Book.Price" class="ms-2"></label>
+                                <label asp-for="Book.Price" ></label>
                                 <span asp-validation-for="Book.Price" class="text-danger"></span>
                             </div>
                             <div class="form-floating py-2 col-12">
                                 <select asp-for="Book.CategoryId" asp-items="@Model.CategoryList" class="form-select border-0 shadow">
                                     <option disabled selected>--Select Category--</option>
                                 </select>
-                                <label asp-for="Book.CategoryId" class="ms-2"></label>
+                                <label asp-for="Book.CategoryId" ></label>
                                 <span asp-validation-for="Book.CategoryId" class="text-danger"></span>
                             </div>
                             <div class="form-floating py-2 col-12">
                                 <select asp-for="Book.AuthorId" asp-items="@Model.AuthorList" class="form-select border-0 shadow">
                                     <option disabled selected>--Select Author--</option>
                                 </select>
-                                <label asp-for="Book.AuthorId" class="ms-2"></label>
+                                <label asp-for="Book.AuthorId" ></label>
                                 <span asp-validation-for="Book.AuthorId" class="text-danger"></span>
                             </div>
                             <div class="form-floating py-2 col-12">
                                 <input type="file" name="file" class="form-control border-0 shadow" />
-                                <label asp-for="Book.ImageUrl" class="ms-2"></label>
+                                <label asp-for="Book.ImageUrl" ></label>
                             </div>
                             <div class="row pt-2">
                                 @if (Model.Book.Id != 0)
@@ -79,36 +79,36 @@
                     <div class="border p-3">
                         <div class="form-floating py-2 col-12">
                             <input asp-for="Book.Title" class="form-control border-0 shadow" />
-                            <label asp-for="Book.Title" class="ms-2"></label>
+                            <label asp-for="Book.Title" ></label>
                             <span asp-validation-for="Book.Title" class="text-danger"></span>
                         </div>
                         <div class="form-floating py-2 col-12">
                             <textarea asp-for="Book.Description" class="form-control border-0 shadow"></textarea>
-                            <label asp-for="Book.Description" class="ms-2"></label>
+                            <label asp-for="Book.Description" ></label>
                             <span asp-validation-for="Book.Description" class="text-danger"></span>
                         </div>
                         <div class="form-floating py-2 col-12">
                             <input asp-for="Book.Price" class="form-control border-0 shadow" />
-                            <label asp-for="Book.Price" class="ms-2"></label>
+                            <label asp-for="Book.Price" ></label>
                             <span asp-validation-for="Book.Price" class="text-danger"></span>
                         </div>
                         <div class="form-floating py-2 col-12">
                             <select asp-for="Book.CategoryId" asp-items="@Model.CategoryList" class="form-select border-0 shadow">
                                 <option disabled selected>--Select Category--</option>
                             </select>
-                            <label asp-for="Book.CategoryId" class="ms-2"></label>
+                            <label asp-for="Book.CategoryId" ></label>
                             <span asp-validation-for="Book.CategoryId" class="text-danger"></span>
                         </div>
                         <div class="form-floating py-2 col-12">
                             <select asp-for="Book.AuthorId" asp-items="@Model.AuthorList" class="form-select border-0 shadow">
                                 <option disabled selected>--Select Author--</option>
                             </select>
-                            <label asp-for="Book.AuthorId" class="ms-2"></label>
+                            <label asp-for="Book.AuthorId" ></label>
                             <span asp-validation-for="Book.AuthorId" class="text-danger"></span>
                         </div>
                         <div class="form-floating py-2 col-12">
                             <input type="file" name="file" class="form-control border-0 shadow" />
-                            <label asp-for="Book.ImageUrl" class="ms-2"></label>
+                            <label asp-for="Book.ImageUrl" ></label>
                         </div>
 
                         <div class="row pt-2">
