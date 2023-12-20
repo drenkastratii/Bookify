@@ -46,7 +46,21 @@ namespace BookifyWeb.Areas.Admin.Controllers
             return Json(new { data = customerUsers });
         }
 
+        [HttpDelete]
+        public IActionResult Delete(string? id)
+        {
+            var userToBeDeleted = _unitOfWork.ApplicationUser.Get(c => c.Id == id);
+            if (userToBeDeleted == null)
+            {
+                return Json(new { success = false, message = "Error while deleting" });
+            }
 
+            _unitOfWork.ApplicationUser.Remove(userToBeDeleted);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Deleted Successfully" });
+
+        }
 
         [HttpPost]
         public IActionResult LockUnlock([FromBody] string id)
