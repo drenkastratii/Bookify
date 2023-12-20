@@ -30,9 +30,13 @@ namespace BookifyWeb.Areas.Customer.Controllers
             {
                 // If search string is provided, filter books based on the title or author
                 bookList = _unitOfWork.Book.GetAll(
-                    filter: b => b.Title.ToLower().Contains(searchString.ToLower()) || b.Author.FullName.ToLower().Contains(searchString.ToLower()),
-                    includeProperties: "Category,Author"
+                    filter: b =>
+                        b.Title.ToLower().Contains(searchString.ToLower()) ||
+                        b.Author.FullName.ToLower().Contains(searchString.ToLower()) ||
+                        b.Category.Name.ToLower().Contains(searchString.ToLower()),
+                includeProperties: "Category,Author"
                 );
+
                 if (!bookList.Any())
                 {
                     bookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author");
@@ -82,7 +86,7 @@ namespace BookifyWeb.Areas.Customer.Controllers
             shoppingCart.ApplicationUserId = userId;
 
             ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId && u.BookId == shoppingCart.BookId);
-            if(cartFromDb != null)
+            if (cartFromDb != null)
             {
                 //shopping cart already exists
                 cartFromDb.Count += shoppingCart.Count;
@@ -99,7 +103,7 @@ namespace BookifyWeb.Areas.Customer.Controllers
 
             }
             TempData["success"] = "Cart updated successfully";
-            
+
 
 
             return RedirectToAction(nameof(Index));
