@@ -13,15 +13,14 @@ namespace BookifyWeb.Areas.Customer.Controllers
     [Area("Customer")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
         public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
-            _logger = logger;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
+
         public async Task<IActionResult> Index(string searchString)
         {
             IEnumerable<Book> bookList;
@@ -104,19 +103,8 @@ namespace BookifyWeb.Areas.Customer.Controllers
             }
             TempData["success"] = "Cart updated successfully";
 
-
-
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

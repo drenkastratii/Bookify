@@ -39,7 +39,6 @@ namespace BookifyWeb.Areas.Customer.Controllers
                 var price = cart.Book.Price;
                 ShoppingCartVM.OrderHeader.OrderTotal += price*(cart.Count);
             }
-
             return View(ShoppingCartVM);
         }
 
@@ -53,6 +52,12 @@ namespace BookifyWeb.Areas.Customer.Controllers
                 ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Book"),
                 OrderHeader = new()
             };
+
+            if(ShoppingCartVM.ShoppingCartList.Count() == 0)
+            {
+                TempData["warning"] = "No books were found in you shopping cart!";
+                return RedirectToAction(nameof(Index));
+            }
 
             ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id ==  userId);
 
@@ -79,7 +84,6 @@ namespace BookifyWeb.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             ShoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId, includeProperties: "Book");
-
             ShoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
             ShoppingCartVM.OrderHeader.ApplicationUserId = userId;
 
