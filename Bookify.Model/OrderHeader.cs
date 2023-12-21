@@ -16,15 +16,11 @@ namespace Bookify.Models
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
-
         public DateTime OrderDate { get; set; }
         public double OrderTotal { get; set; }
-
         public string? OrderStatus { get; set; }
-
         public string? SessionId { get; set; }
         public string? PayementIntentId { get; set; }
-
         [Required]
         public string Name { get; set; }
         [Required]
@@ -37,8 +33,5 @@ namespace Bookify.Models
         public string? State { get; set; }
         [Required]
         public string? PostalCode { get; set; }
-
-
-
     }
 }

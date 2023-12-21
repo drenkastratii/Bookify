@@ -15,12 +15,13 @@ namespace BookifyWeb.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
-        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
+        public HomeController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
 
+        #region Index
         public async Task<IActionResult> Index(string searchString)
         {
             IEnumerable<Book> bookList;
@@ -62,8 +63,9 @@ namespace BookifyWeb.Areas.Customer.Controllers
             // Pass the filtered or unfiltered book list to the view
             return View(bookList);
         }
+        #endregion
 
-
+        #region Details
         [Authorize(Policy = "NonAdminAccess")]
         public IActionResult Details(int bookId)
         {
@@ -105,6 +107,7 @@ namespace BookifyWeb.Areas.Customer.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
     }
 }

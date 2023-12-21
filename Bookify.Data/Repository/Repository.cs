@@ -17,8 +17,7 @@ namespace Bookify.Data.Repository
         {
             _db = db;
             this.dbSet=db.Set<T>();
-            _db.Books.Include(u => u.Category).Include(u => u.CategoryId).Include(u => u.Author).Include(u => u.AuthorId); //id???
-            
+            _db.Books.Include(u => u.Category).Include(u => u.CategoryId).Include(u => u.Author).Include(u => u.AuthorId); 
         }
         public void Add(T entity)
         {
@@ -52,7 +51,7 @@ namespace Bookify.Data.Repository
 
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties=null)
         {
-            //includat i pranojna si vlera te ndame me presje 
+            //includat i pranojna si vlera qe ndahen nga presja 
             IQueryable<T> query = dbSet;
             if(filter != null)
             {

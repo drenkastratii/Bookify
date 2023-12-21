@@ -22,11 +22,16 @@ namespace BookifyWeb.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
         }
+
+        #region Index
         public IActionResult Index()
         {
             List<Book> objBookList = _unitOfWork.Book.GetAll(includeProperties:"Category,Author").ToList();
             return View(objBookList);
         }
+        #endregion
+
+        #region Upsert
         public IActionResult UpSert(int? id)
         {
 
@@ -75,7 +80,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
                 }
             }
 
-            // name validatino for update
+            // name validation for update
             if (bookVM.Book.Id != 0)
             {
                 // Check for duplicate title before ModelState validation
@@ -145,6 +150,7 @@ namespace BookifyWeb.Areas.Admin.Controllers
                 return View(bookVM);
             }
         }
+        #endregion
 
         #region API Calls
 

@@ -23,6 +23,7 @@ namespace BookifyWeb.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        #region Index
         public IActionResult Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -41,7 +42,9 @@ namespace BookifyWeb.Areas.Customer.Controllers
             }
             return View(ShoppingCartVM);
         }
+        #endregion
 
+        #region Summary
         public IActionResult Summary()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -148,7 +151,9 @@ namespace BookifyWeb.Areas.Customer.Controllers
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
+        #endregion
 
+        #region OrderConfirmation
         public IActionResult OrderConfirmation(int id)
         {
             OrderHeader orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == id, includeProperties: "ApplicationUser");
@@ -173,7 +178,9 @@ namespace BookifyWeb.Areas.Customer.Controllers
             HttpContext.Session.Clear();
             return View(id);
         }
+        #endregion
 
+        #region Plus
         public IActionResult Plus(int cartId)
         {
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id ==  cartId);
@@ -182,7 +189,9 @@ namespace BookifyWeb.Areas.Customer.Controllers
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
+        #region Minus
         public IActionResult Minus(int cartId)
         {
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked: true);
@@ -202,7 +211,9 @@ namespace BookifyWeb.Areas.Customer.Controllers
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
+        #region Remove
         public IActionResult Remove(int cartId)
         {
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId,tracked:true);
@@ -212,5 +223,6 @@ namespace BookifyWeb.Areas.Customer.Controllers
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+        #endregion
     }
 }

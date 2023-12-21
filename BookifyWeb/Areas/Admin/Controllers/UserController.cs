@@ -21,12 +21,13 @@ namespace BookifyWeb.Areas.Admin.Controllers
             _unitOfWork = unitOfWork;
             _userManager = userManager;
         }
+
+        #region Index
         public IActionResult Index()
         {
             return View();
         }
-
-
+        #endregion
 
         #region API CALLS
 

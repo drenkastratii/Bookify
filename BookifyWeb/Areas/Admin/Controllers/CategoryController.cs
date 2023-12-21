@@ -17,11 +17,16 @@ namespace BookifyWeb.Areas.Admin.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+
+        #region Index
         public IActionResult Index()
         {
             List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(objCategoryList);
         }
+        #endregion
+
+        #region Create
         public IActionResult Create()
         {
             return View();
@@ -46,7 +51,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
 
         }
+        #endregion
 
+        #region Edit
         public IActionResult Edit(int? id)
         {
             if (id == null || id == 0)
@@ -76,9 +83,8 @@ namespace BookifyWeb.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             return View();
-
-
         }
+        #endregion
 
         #region API Calls
 

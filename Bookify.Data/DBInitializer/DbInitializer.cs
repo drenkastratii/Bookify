@@ -29,8 +29,6 @@ namespace Bookify.Data.DBInitializer
 
         public void Initialize()
         {
-
-
             //migrations if they are not applied
             try
             {
@@ -41,14 +39,11 @@ namespace Bookify.Data.DBInitializer
             }
             catch (Exception ex) { }
 
-
-
             //create roles if they are not created
             if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
             {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
-
 
                 //if roles are not created, then we will create admin user as well
                 _userManager.CreateAsync(new ApplicationUser
@@ -98,7 +93,6 @@ namespace Bookify.Data.DBInitializer
                 _userManager.AddToRoleAsync(user3, SD.Role_Customer).GetAwaiter().GetResult();
 
             }
-
             return;
         }
     }

@@ -23,11 +23,15 @@ namespace BookifyWeb.Areas.Admin.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+
+        #region Index
         public IActionResult Index()
         {
             return View();
         }
+        #endregion
 
+        #region Details
         public IActionResult Details(int orderId)
         {
             OrderVM = new()
@@ -38,7 +42,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
             return View(OrderVM);
         }
+        #endregion
 
+        #region UpdateOrderDetail
         [HttpPost]
         [Authorize(Roles = SD.Role_Admin)]
         public IActionResult UpdateOrderDetail()
@@ -58,7 +64,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Details), new { orderId = orderHeaderFromDb.Id });
         }
+        #endregion
 
+        #region StartProcessing
         [HttpPost]
         [Authorize(Roles = SD.Role_Admin)]
         public IActionResult StartProcessing()
@@ -71,7 +79,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
         }
+        #endregion
 
+        #region ShipOrder
         [HttpPost]
         [Authorize(Roles = SD.Role_Admin)]
         public IActionResult ShipOrder()
@@ -84,7 +94,9 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
         }
+        #endregion
 
+        #region CancelOrder
         [HttpPost]
         [Authorize(Roles = SD.Role_Admin)]
         public IActionResult CancelOrder()
@@ -105,13 +117,11 @@ namespace BookifyWeb.Areas.Admin.Controllers
 
             }
 
-
             TempData["Success"] = "Order Cancelled Successfully.";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
 
-
-
         }
+        #endregion
 
         #region API Calls
 
