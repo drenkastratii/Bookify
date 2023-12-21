@@ -56,7 +56,7 @@ namespace Bookify.Data.DBInitializer
                     State = "Kosova",
                     PostalCode = "10000",
                     City = "Prishtine"
-                }, "Dren123*").GetAwaiter().GetResult();
+                }, "Dren123!").GetAwaiter().GetResult();
 
                 _userManager.CreateAsync(new ApplicationUser
                 {
@@ -68,7 +68,7 @@ namespace Bookify.Data.DBInitializer
                     State = "Kosova",
                     PostalCode = "10000",
                     City = "Prishtine"
-                }, "Blend123*").GetAwaiter().GetResult();
+                }, "Blend123!").GetAwaiter().GetResult();
 
                 _userManager.CreateAsync(new ApplicationUser
                 {
@@ -80,7 +80,7 @@ namespace Bookify.Data.DBInitializer
                     State = "Kosova",
                     PostalCode = "10000",
                     City = "Gjilan"
-                }, "Era123*").GetAwaiter().GetResult();
+                }, "Era123!").GetAwaiter().GetResult();
 
 
                 ApplicationUser user1 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "dren@gmail.com");

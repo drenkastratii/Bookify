@@ -28,19 +28,20 @@ namespace BookifyWeb.Areas.Customer.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                // If search string is provided, filter books based on the title or author
+                // filter books based on the title
                 bookList = _unitOfWork.Book.GetAll(
                     filter: b =>
-                        b.Title.ToLower().Contains(searchString.ToLower()) ||
-                        b.Author.FullName.ToLower().Contains(searchString.ToLower()) ||
-                        b.Category.Name.ToLower().Contains(searchString.ToLower()),
+                        b.Title.ToLower().Contains(searchString.ToLower()) //||
+                        //b.Author.FullName.ToLower().Contains(searchString.ToLower()) ||
+                        //b.Category.Name.ToLower().Contains(searchString.ToLower())
+                        ,
                 includeProperties: "Category,Author"
                 );
 
                 if (!bookList.Any())
                 {
                     bookList = _unitOfWork.Book.GetAll(includeProperties: "Category,Author");
-                    TempData["warning"] = "No books or authors were found!";
+                    TempData["warning"] = "No books were found!";
                 }
             }
             else
