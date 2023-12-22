@@ -150,34 +150,34 @@
                                 <span class="text-primary">Order Summary</span>
                             </h4>
                             <label class="btn btn-outline-primary form-control my-2">Order Status - @Model.OrderHeader.OrderStatus</label>
-                            @foreach(var detail in Model.OrderDetail)
-                            {
-                                <ul class="list-group mb-3">
+                            <ul class="list-group mb-3">
+                                @foreach (var detail in Model.OrderDetail)
+                                {
                                     <li class="list-group-item d-flex justify-content-between p-2">
                                         <div class="row container">
                                             <div class="col-8">
+
                                                 <h6 class="my-0 text-primary">@detail.Book.Title</h6>
-                                                <small class="text-muted">@detail.Book.Price</small><br />
-                                                <small class="text-muted">@detail.Count</small>
+                                                <small class="text-muted">Price : @detail.Price.ToString("c")</small><br />
+                                                <small class="text-muted">Quantity : @detail.Count</small>
                                             </div>
                                             <div class="col-4 text-end">
-                                                <p class="text-success">@((detail.Count * detail.Book.Price).ToString("c"))</p>
+                                                <p class="text-success">@((detail.Count * detail.Price).ToString("c"))</p>
                                             </div>
                                         </div>
                                     </li>
-
-                                    <li class="list-group-item bg-primary">
-                                        <div class="row container">
-                                            <div class="col-6">
-                                                <h5 class="text-white">TOTAL </h5>
-                                            </div>
-                                            <div class="col-6 text-end">
-                                                <h5 class="text-white">@Model.OrderHeader.OrderTotal.ToString("c")</h5>
-                                            </div>
+                                }
+                                <li class="list-group-item bg-primary">
+                                    <div class="row container">
+                                        <div class="col-6">
+                                            <h5 class="text-white">TOTAL </h5>
                                         </div>
-                                    </li>
-                                </ul>
-                            }
+                                        <div class="col-6 text-end">
+                                            <h5 class="text-white">@Model.OrderHeader.OrderTotal.ToString("c")</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                             @if (User.IsInRole(SD.Role_Admin))
                             {
                                 if(Model.OrderHeader.OrderStatus == SD.StatusApproved)
